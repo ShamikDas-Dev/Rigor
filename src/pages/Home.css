@@ -277,30 +277,32 @@
 
 /* TEAM */
 .team-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 32px;
+  display: flex;
+  justify-content: flex-start;
 }
 
 .team-member {
   display: flex;
   align-items: center;
   gap: 24px;
-  padding: 32px;
+  width: min(100%, 720px);
+  padding: 28px 32px;
   background-color: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
-  transition: border-color 0.3s ease;
+  transition: border-color 0.3s ease, transform 0.3s ease;
 }
 
 .team-member:hover {
-  border-color: rgba(255,255,255,0.2);
+  border-color: rgba(255, 255, 255, 0.2);
+  transform: translateY(-2px);
 }
 
 .member-avatar {
-  width: 64px;
-  height: 64px;
+  width: 88px;
+  height: 88px;
   border-radius: 50%;
+  object-fit: cover;
   background-color: var(--surface-elevated);
   border: 1px solid var(--border);
   flex-shrink: 0;
@@ -309,12 +311,12 @@
 .member-info {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 6px;
 }
 
 .member-id {
   font-family: var(--font-heading);
-  font-size: 1rem;
+  font-size: 1.25rem;
   font-weight: 700;
   letter-spacing: 0.05em;
   color: var(--text-primary);
@@ -323,6 +325,24 @@
 .member-role {
   font-size: 0.875rem;
   color: var(--text-muted);
+}
+
+.member-linkedin {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  width: fit-content;
+  margin-top: 6px;
+  color: var(--accent);
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-decoration: none;
+  transition: opacity 0.2s ease;
+}
+
+.member-linkedin:hover {
+  opacity: 0.8;
 }
 
 /* RESPONSIVE HOME */
@@ -368,4 +388,17 @@
   .section {
     padding: 80px 0;
   }
+  .team-member {
+  padding: 22px;
+  gap: 16px;
+}
+
+.member-avatar {
+  width: 72px;
+  height: 72px;
+}
+
+.member-id {
+  font-size: 1.05rem;
+}
 }

@@ -1,5 +1,5 @@
 import React from 'react';
-import { ArrowRight, ChevronDown } from 'lucide-react';
+import { ArrowRight, Linkedin } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import Button from '../components/Button';
@@ -160,19 +160,34 @@ export default function Home() {
             title={"BUILT WITH\nDISCIPLINE."} 
             highlight="DISCIPLINE." 
           />
-          <div className="team-grid">
-            {['01', '02'].map(id => (
-              <div key={id} className="team-member">
-                <div className="member-avatar" />
-                <div className="member-info">
-                  <span className="member-id">DEVELOPER {id}</span>
-                  <span className="member-role">
-                    {id === '01' ? 'Frontend / Product' : 'Computer Vision / ML'}
-                  </span>
-                </div>
-              </div>
-            ))}
-          </div>
+<div className="team-grid">
+  <div className="team-member">
+    <img
+      className="member-avatar"
+      src="/shamik-das.jpg"
+      alt="Shamik Das"
+    />
+
+    <div className="member-info">
+      <span className="member-id">SHAMIK DAS</span>
+
+      <span className="member-role">
+        Founder / Developer
+      </span>
+
+      <a
+        className="member-linkedin"
+        href="https://www.linkedin.com/in/shamik-das-tech/"
+        target="_blank"
+        rel="noreferrer"
+        aria-label="Shamik Das on LinkedIn"
+      >
+        <Linkedin size={16} />
+        <span></span>
+      </a>
+    </div>
+  </div>
+</div>
         </div>
       </section>
 

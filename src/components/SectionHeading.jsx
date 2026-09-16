@@ -1,6 +1,19 @@
 import React from 'react';
 import './SectionHeading.css';
-
+const FEEDBACK_URL = "https://forms.gle/DY9BdAtsKCi8eyBB8";
+<button
+  type="button"
+  className="feedback-button"
+  onClick={() =>
+    window.open(
+      FEEDBACK_URL,
+      "_blank",
+      "noopener,noreferrer"
+    )
+  }
+>
+  GIVE FEEDBACK
+</button>
 export default function SectionHeading({ eyebrow, title, highlight }) {
   return (
     <header className="section-heading">

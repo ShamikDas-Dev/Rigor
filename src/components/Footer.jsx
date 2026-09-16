@@ -30,3 +30,11 @@ export default function Footer() {
     </footer>
   );
 }
+const FEEDBACK_URL = "https://forms.gle/DY9BdAtsKCi8eyBB8";
+<a
+  href={FEEDBACK_URL}
+  target="_blank"
+  rel="noreferrer"
+>
+  Feedback
+</a>

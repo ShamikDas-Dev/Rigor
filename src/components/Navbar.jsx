@@ -72,7 +72,11 @@ export default function Navbar() {
     closeMenu();
     navigate('/support');
   };
+  const FEEDBACK_URL = "https://forms.gle/DY9BdAtsKCi8eyBB8";
 
+  const goToFeedback = () => {
+    window.open(FEEDBACK_URL, "_blank", "noopener,noreferrer");
+  };
   return (
     <nav
       className={`navbar ${scrolled ? 'scrolled' : ''}`}
@@ -132,8 +136,13 @@ export default function Navbar() {
           >
             Support Us
           </button>
+          <button
+            type="button"
+            onClick={goToFeedback}
+          >
+            Feedback
+          </button>
         </div>
-
         {/* DESKTOP ACTIONS + MOBILE MENU */}
         <div className="nav-actions">
 

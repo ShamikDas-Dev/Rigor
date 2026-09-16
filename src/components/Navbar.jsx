@@ -1,60 +1,154 @@
-import React, { useState, useEffect } from 'react';
-import { Link, useNavigate, useLocation } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
 import { Menu, X } from 'lucide-react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import Button from './Button';
 import './Navbar.css';
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+
   const navigate = useNavigate();
   const location = useLocation();
 
   useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 20);
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 20);
+    };
+
     window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
   }, []);
 
-  const handleNavClick = (e, targetId) => {
-    if (location.pathname !== '/') {
-      e.preventDefault();
-      navigate('/');
-      setTimeout(() => {
-        document.getElementById(targetId)?.scrollIntoView({ behavior: 'smooth' });
-      }, 300);
-    } else {
-      e.preventDefault();
-      document.getElementById(targetId)?.scrollIntoView({ behavior: 'smooth' });
-    }
+  const closeMobileMenu = () => {
     setMobileOpen(false);
   };
 
-  return (
-    <nav className={`navbar ${scrolled ? 'scrolled' : ''}`} role="navigation" aria-label="Main navigation">
-      <div className="container navbar-inner">
-        <Link to="/" className="logo" onClick={() => setMobileOpen(false)}>
-          RIGOR
-        </Link>
+  const handleHomeClick = () => {
+    closeMobileMenu();
 
+    if (location.pathname !== '/') {
+      navigate('/');
+      setTimeout(() => {
+        document.getElementById('home')?.scrollIntoView({
+          behavior: 'smooth',
+        });
+      }, 250);
+      return;
+    }
+
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth',
+    });
+  };
+
+  const handleSectionClick = (targetId) => {
+    closeMobileMenu();
+
+    if (location.pathname !== '/') {
+      navigate('/');
+
+      setTimeout(() => {
+        document.getElementById(targetId)?.scrollIntoView({
+          behavior: 'smooth',
+        });
+      }, 250);
+
+      return;
+    }
+
+    document.getElementById(targetId)?.scrollIntoView({
+      behavior: 'smooth',
+    });
+  };
+
+  const handleWorkoutClick = () => {
+    closeMobileMenu();
+    navigate('/workout');
+  };
+
+  return (
+    <nav
+      className={`navbar ${scrolled ? 'scrolled' : ''}`}
+      role="navigation"
+      aria-label="Main navigation"
+    >
+      <div className="container navbar-inner">
+
+        {/* BRAND */}
+        <button
+          type="button"
+          className="logo"
+          onClick={handleHomeClick}
+          aria-label="Go to RIGOR home"
+        >
+          <img
+            src="/rigor-logo.png"
+            alt=""
+            className="brand-logo"
+          />
+
+          <span>RIGOR</span>
+        </button>
+
+        {/* DESKTOP / MOBILE NAV */}
         <div className={`nav-links ${mobileOpen ? 'open' : ''}`}>
-          <a href="#home" onClick={(e) => handleNavClick(e, 'home')}>Home</a>
-          <a href="#features" onClick={(e) => handleNavClick(e, 'features')}>Features</a>
-          <a href="#how-it-works" onClick={(e) => handleNavClick(e, 'how-it-works')}>How It Works</a>
-          <a href="#developers" onClick={(e) => handleNavClick(e, 'developers')}>Team</a>
+          <button
+            type="button"
+            onClick={handleHomeClick}
+          >
+            Home
+          </button>
+
+          <button
+            type="button"
+            onClick={() => handleSectionClick('features')}
+          >
+            Features
+          </button>
+
+          <button
+            type="button"
+            onClick={() => handleSectionClick('how-it-works')}
+          >
+            How It Works
+          </button>
+
+          <button
+            type="button"
+            onClick={() => handleSectionClick('developers')}
+          >
+            Team
+          </button>
         </div>
 
+        {/* ACTIONS */}
         <div className="nav-actions">
-          <Button variant="primary" size="sm" onClick={() => navigate('/workout')}>
+          <Button
+            variant="primary"
+            size="sm"
+            onClick={handleWorkoutClick}
+          >
             START WORKOUT
           </Button>
-          <button 
-            className="mobile-toggle" 
-            onClick={() => setMobileOpen(!mobileOpen)}
-            aria-label="Toggle menu"
+
+          <button
+            type="button"
+            className="mobile-toggle"
+            onClick={() => setMobileOpen((current) => !current)}
+            aria-label={mobileOpen ? 'Close menu' : 'Open menu'}
             aria-expanded={mobileOpen}
+            aria-controls="main-navigation"
           >
-            {mobileOpen ? <X size={24} /> : <Menu size={24} />}
+            {mobileOpen ? (
+              <X size={24} />
+            ) : (
+              <Menu size={24} />
+            )}
           </button>
         </div>
       </div>

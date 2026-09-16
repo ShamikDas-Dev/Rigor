@@ -1,3 +1,7 @@
+/* ================================
+   NAVBAR
+================================ */
+
 .navbar {
   position: fixed;
   top: 0;
@@ -5,14 +9,17 @@
   right: 0;
   z-index: 1000;
   padding: 16px 0;
-  transition: all 0.3s ease;
+  transition:
+    background 0.3s ease,
+    backdrop-filter 0.3s ease,
+    padding 0.3s ease;
   background: transparent;
 }
 
 .navbar.scrolled {
-  background: rgba(10, 10, 10, 0.85);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  background: rgba(10, 10, 10, 0.88);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
   border-bottom: 1px solid var(--border);
   padding: 12px 0;
 }
@@ -21,32 +28,100 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  min-height: 40px;
 }
 
+
+/* ================================
+   BRAND
+================================ */
+
 .logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+
+  color: var(--text-primary);
+  cursor: pointer;
+  text-decoration: none;
+
   font-family: var(--font-heading);
-  font-size: 1.5rem;
+}
+
+.logo:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 5px;
+  border-radius: 4px;
+}
+
+.brand-logo {
+  width: 38px;
+  height: 38px;
+  object-fit: contain;
+  border-radius: 8px;
+  flex-shrink: 0;
+}
+
+.logo span {
+  font-family: var(--font-heading);
+  font-size: 1.35rem;
   font-weight: 700;
-  letter-spacing: 0.1em;
+  line-height: 1;
+  letter-spacing: 0.08em;
   color: var(--text-primary);
 }
+
+
+/* ================================
+   NAVIGATION LINKS
+================================ */
 
 .nav-links {
   display: flex;
+  align-items: center;
   gap: 40px;
 }
 
-.nav-links a {
+.nav-links button {
+  appearance: none;
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+
+  color: var(--text-secondary);
+  cursor: pointer;
+
+  font-family: inherit;
   font-size: 0.875rem;
   font-weight: 500;
-  color: var(--text-secondary);
-  transition: color 0.2s ease;
+  line-height: 1.4;
   letter-spacing: 0.02em;
+
+  transition:
+    color 0.2s ease,
+    opacity 0.2s ease;
 }
 
-.nav-links a:hover {
+.nav-links button:hover {
   color: var(--text-primary);
 }
+
+.nav-links button:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 5px;
+  border-radius: 3px;
+}
+
+
+/* ================================
+   ACTIONS
+================================ */
 
 .nav-actions {
   display: flex;
@@ -56,42 +131,177 @@
 
 .mobile-toggle {
   display: none;
+
+  align-items: center;
+  justify-content: center;
+
+  width: 42px;
+  height: 42px;
+
+  padding: 0;
+  margin: 0;
+
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 8px;
+
   color: var(--text-primary);
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease;
 }
 
+.mobile-toggle:hover {
+  background: rgba(255, 255, 255, 0.04);
+  border-color: var(--border);
+}
+
+.mobile-toggle:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+
+/* ================================
+   TABLET / MOBILE
+================================ */
+
 @media (max-width: 768px) {
+
+  .navbar {
+    padding: 12px 0;
+  }
+
+  .navbar.scrolled {
+    padding: 10px 0;
+  }
+
+  .navbar-inner {
+    min-height: 40px;
+  }
+
+  /* Mobile menu */
+
   .nav-links {
     position: absolute;
+
     top: 100%;
     left: 0;
     right: 0;
+
+    display: flex;
     flex-direction: column;
-    background: var(--bg-secondary);
+    align-items: stretch;
+
+    gap: 0;
+
+    padding: 12px 20px 20px;
+
+    background: rgba(10, 10, 10, 0.96);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+
     border-bottom: 1px solid var(--border);
-    padding: 24px;
-    gap: 24px;
-    transform: translateY(-100%);
+
+    transform: translateY(-110%);
     opacity: 0;
+    visibility: hidden;
     pointer-events: none;
-    transition: all 0.3s ease;
+
+    transition:
+      transform 0.3s ease,
+      opacity 0.3s ease,
+      visibility 0.3s ease;
   }
 
   .nav-links.open {
     transform: translateY(0);
     opacity: 1;
-    pointer-events: all;
+    visibility: visible;
+    pointer-events: auto;
   }
 
-  .mobile-toggle {
-    display: block;
+  .nav-links button {
+    width: 100%;
+    min-height: 52px;
+
+    display: flex;
+    align-items: center;
+
+    padding: 0 4px;
+
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+
+    text-align: left;
+    font-size: 0.95rem;
   }
 
+  .nav-links button:last-child {
+    border-bottom: none;
+  }
+
+  .nav-links button:hover {
+    color: var(--accent);
+  }
+
+  /* Hide desktop CTA */
   .nav-actions .btn {
     display: none;
   }
-  
-  .nav-links.open + .nav-actions .btn,
-  .nav-links.open ~ .nav-actions .btn {
-    /* We hide desktop CTA on mobile, put it in menu if needed or just rely on hero CTA */
+
+  /* Show hamburger */
+  .mobile-toggle {
+    display: flex;
+  }
+}
+
+
+/* ================================
+   SMALL MOBILE
+================================ */
+
+@media (max-width: 640px) {
+
+  .brand-logo {
+    width: 32px;
+    height: 32px;
+  }
+
+  .logo span {
+    font-size: 1.15rem;
+  }
+
+  .mobile-toggle {
+    width: 40px;
+    height: 40px;
+  }
+
+  .nav-links {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+}
+
+
+/* ================================
+   VERY SMALL DEVICES
+================================ */
+
+@media (max-width: 380px) {
+
+  .brand-logo {
+    width: 30px;
+    height: 30px;
+  }
+
+  .logo span {
+    font-size: 1.05rem;
+  }
+
+  .mobile-toggle {
+    width: 38px;
+    height: 38px;
   }
 }

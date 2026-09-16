@@ -113,33 +113,62 @@ export default function Home() {
       </section>
 
       {/* HOW IT WORKS SECTION */}
-      <section id="how-it-works" className="section how-section">
-        <div className="container">
-          <SectionHeading 
-            title={"THE\nPROCESS."} 
-            highlight="PROCESS." 
-          />
-          <div className="process-timeline">
-            {[
-              { id: '01', title: 'SET UP', desc: 'Allow camera access and position yourself in frame.' },
-              { id: '02', title: 'MOVE', desc: 'Start your selected exercise.' },
-              { id: '03', title: 'ANALYZE', desc: 'RIGOR tracks your movement and identifies your exercise.' },
-              { id: '04', title: 'IMPROVE', desc: 'Receive real-time form feedback and rep tracking.' }
-            ].map((step, i) => (
-              <div key={step.id} className="process-step">
-                <div className="step-marker">
-                  <span className="step-id">{step.id}</span>
-                  {i < 3 && <div className="step-line" />}
-                </div>
-                <div className="step-content">
-                  <h3 className="step-title">{step.title}</h3>
-                  <p className="step-desc">{step.desc}</p>
-                </div>
-              </div>
-            ))}
+<section id="how-it-works" className="section how-section">
+  <div className="container">
+    <div className="process-header">
+      <SectionHeading
+        title={"THE\nPROCESS."}
+        highlight="PROCESS."
+      />
+
+      <p className="process-intro">
+        From camera setup to real-time feedback, RIGOR keeps the
+        workout simple and focused on movement.
+      </p>
+    </div>
+
+    <div className="process-timeline">
+      {[
+        {
+          id: "01",
+          title: "POSITION",
+          desc: "Allow camera access and keep your full body visible in frame.",
+          tag: "CAMERA",
+        },
+        {
+          id: "02",
+          title: "SELECT",
+          desc: "Choose the exercise you want to train from the supported movements.",
+          tag: "EXERCISE",
+        },
+        {
+          id: "03",
+          title: "MOVE",
+          desc: "Perform the movement while RIGOR tracks your body position in real time.",
+          tag: "TRACKING",
+        },
+        {
+          id: "04",
+          title: "IMPROVE",
+          desc: "Receive live rep counting, movement feedback and voice guidance.",
+          tag: "FEEDBACK",
+        },
+      ].map((step) => (
+        <div key={step.id} className="process-card">
+          <div className="process-card-top">
+            <span className="process-number">{step.id}</span>
+            <span className="process-tag">{step.tag}</span>
+          </div>
+
+          <div className="process-card-content">
+            <h3>{step.title}</h3>
+            <p>{step.desc}</p>
           </div>
         </div>
-      </section>
+      ))}
+    </div>
+  </div>
+</section>
 
 <section id="exercises" className="section exercises-section">
   <div className="container">

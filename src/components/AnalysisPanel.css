@@ -1,0 +1,137 @@
+.analysis-panel {
+  display: flex;
+  flex-direction: column;
+  background-color: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 32px;
+  height: 100%;
+  min-height: 500px;
+}
+
+.panel-section {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.panel-label {
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  color: var(--text-muted);
+}
+
+.exercise-select {
+  width: 100%;
+  background-color: var(--bg-primary);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 12px 16px;
+  color: var(--text-primary);
+  font-family: var(--font-heading);
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  appearance: none;
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+
+.exercise-select:focus {
+  border-color: var(--accent);
+}
+
+.panel-divider {
+  height: 1px;
+  background-color: var(--border);
+  margin: 32px 0;
+}
+
+.metrics-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+
+.metric {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.metric:last-child {
+  grid-column: span 2;
+}
+
+.metric-label {
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  color: var(--text-muted);
+}
+
+.metric-value {
+  font-family: var(--font-heading);
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  line-height: 1;
+}
+
+.metric-value.accent {
+  color: var(--accent);
+}
+
+.metric-value.mono {
+  font-variant-numeric: tabular-nums;
+}
+
+.feedback-text {
+  font-size: 0.9375rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  font-style: italic;
+}
+
+.panel-spacer {
+  flex-grow: 1;
+}
+
+.panel-controls {
+  display: flex;
+  gap: 12px;
+  margin-top: 32px;
+}
+
+.control-btn {
+  flex: 1;
+}
+
+@media (max-width: 1024px) {
+  .analysis-panel {
+    min-height: auto;
+  }
+  .metrics-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .metric:last-child {
+    grid-column: span 1;
+  }
+}
+
+@media (max-width: 640px) {
+  .analysis-panel {
+    padding: 24px;
+  }
+  .metrics-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+  .metric:last-child {
+    grid-column: span 2;
+  }
+  .panel-controls {
+    flex-direction: column;
+  }
+}

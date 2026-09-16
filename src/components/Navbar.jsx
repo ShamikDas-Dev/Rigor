@@ -17,18 +17,15 @@ export default function Navbar() {
     };
 
     window.addEventListener('scroll', handleScroll);
-
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-    };
+    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const closeMobileMenu = () => {
+  const closeMenu = () => {
     setMobileOpen(false);
   };
 
-  const handleHomeClick = () => {
-    closeMobileMenu();
+  const goHome = () => {
+    closeMenu();
 
     if (location.pathname !== '/') {
       navigate('/');
@@ -46,14 +43,14 @@ export default function Navbar() {
     });
   };
 
-  const handleSectionClick = (targetId) => {
-    closeMobileMenu();
+  const goToSection = (id) => {
+    closeMenu();
 
     if (location.pathname !== '/') {
       navigate('/');
 
       setTimeout(() => {
-        document.getElementById(targetId)?.scrollIntoView({
+        document.getElementById(id)?.scrollIntoView({
           behavior: 'smooth',
         });
       }, 250);
@@ -61,14 +58,19 @@ export default function Navbar() {
       return;
     }
 
-    document.getElementById(targetId)?.scrollIntoView({
+    document.getElementById(id)?.scrollIntoView({
       behavior: 'smooth',
     });
   };
 
-  const handleWorkoutClick = () => {
-    closeMobileMenu();
+  const goToWorkout = () => {
+    closeMenu();
     navigate('/workout');
+  };
+
+  const goToSupport = () => {
+    closeMenu();
+    navigate('/support');
   };
 
   return (
@@ -83,7 +85,7 @@ export default function Navbar() {
         <button
           type="button"
           className="logo"
-          onClick={handleHomeClick}
+          onClick={goHome}
           aria-label="Go to RIGOR home"
         >
           <img
@@ -91,47 +93,62 @@ export default function Navbar() {
             alt=""
             className="brand-logo"
           />
-
           <span>RIGOR</span>
         </button>
 
-        {/* DESKTOP / MOBILE NAV */}
+        {/* NAVIGATION */}
         <div className={`nav-links ${mobileOpen ? 'open' : ''}`}>
-          <button
-            type="button"
-            onClick={handleHomeClick}
-          >
+
+          <button type="button" onClick={goHome}>
             Home
           </button>
 
           <button
             type="button"
-            onClick={() => handleSectionClick('features')}
+            onClick={() => goToSection('features')}
           >
             Features
           </button>
 
           <button
             type="button"
-            onClick={() => handleSectionClick('how-it-works')}
+            onClick={() => goToSection('how-it-works')}
           >
             How It Works
           </button>
 
           <button
             type="button"
-            onClick={() => handleSectionClick('developers')}
+            onClick={() => goToSection('developers')}
           >
             Team
           </button>
+
+          {/* Support Us belongs inside the menu */}
+          <button
+            type="button"
+            className="mobile-support-link"
+            onClick={goToSupport}
+          >
+            Support Us
+          </button>
         </div>
 
-        {/* ACTIONS */}
+        {/* DESKTOP ACTIONS + MOBILE MENU */}
         <div className="nav-actions">
+
+          <button
+            type="button"
+            className="desktop-support"
+            onClick={goToSupport}
+          >
+            Support Us
+          </button>
+
           <Button
             variant="primary"
             size="sm"
-            onClick={handleWorkoutClick}
+            onClick={goToWorkout}
           >
             START WORKOUT
           </Button>
@@ -142,7 +159,6 @@ export default function Navbar() {
             onClick={() => setMobileOpen((current) => !current)}
             aria-label={mobileOpen ? 'Close menu' : 'Open menu'}
             aria-expanded={mobileOpen}
-            aria-controls="main-navigation"
           >
             {mobileOpen ? (
               <X size={24} />
@@ -150,6 +166,7 @@ export default function Navbar() {
               <Menu size={24} />
             )}
           </button>
+
         </div>
       </div>
     </nav>

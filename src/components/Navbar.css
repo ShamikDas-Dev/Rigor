@@ -255,6 +255,34 @@
   .mobile-toggle {
     display: flex;
   }
+  .desktop-support {
+    display: none;
+  }
+
+  .mobile-support-link {
+    display: flex;
+    width: 100%;
+    min-height: 52px;
+
+    align-items: center;
+
+    background: none;
+    border: none;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+
+    padding: 0 4px;
+
+    color: var(--text-secondary);
+    cursor: pointer;
+
+    font-family: inherit;
+    font-size: 0.95rem;
+    text-align: left;
+  }
+
+  .mobile-support-link:hover {
+    color: var(--accent);
+  }
 }
 
 
@@ -304,4 +332,29 @@
     width: 38px;
     height: 38px;
   }
+}
+.mobile-support-link {
+  display: none;
+}
+
+.desktop-support {
+  appearance: none;
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+
+  color: var(--text-secondary);
+  cursor: pointer;
+
+  font-family: inherit;
+  font-size: 0.875rem;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+
+  transition: color 0.2s ease;
+}
+
+.desktop-support:hover {
+  color: var(--accent);
 }

@@ -208,6 +208,114 @@
 .exercises-section {
   background-color: var(--bg-primary);
 }
+/* EXERCISE SHOWCASE */
+
+.exercise-intro {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 40px;
+  margin: 48px 0 56px;
+  max-width: 900px;
+}
+
+.exercise-count {
+  font-family: var(--font-heading);
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  color: var(--accent);
+  white-space: nowrap;
+}
+
+.exercise-intro p {
+  max-width: 520px;
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: 1rem;
+  line-height: 1.7;
+}
+
+.exercise-showcase {
+  border-top: 1px solid var(--border);
+}
+
+.exercise-row {
+  display: grid;
+  grid-template-columns: 70px minmax(0, 1fr) 180px 40px;
+  align-items: center;
+  gap: 24px;
+  min-height: 118px;
+  padding: 24px 0;
+  border-bottom: 1px solid var(--border);
+  transition:
+    padding 0.3s ease,
+    background-color 0.3s ease;
+}
+
+.exercise-row:hover {
+  padding-left: 20px;
+  padding-right: 20px;
+  background: rgba(183, 255, 0, 0.025);
+}
+
+.exercise-number {
+  font-family: var(--font-heading);
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: var(--text-muted);
+}
+
+.exercise-main {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.exercise-main h3 {
+  margin: 0;
+  font-family: var(--font-heading);
+  font-size: clamp(1.4rem, 2.5vw, 2rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
+}
+
+.exercise-main p {
+  margin: 0;
+  font-size: 0.9rem;
+  color: var(--text-muted);
+}
+
+.exercise-metric {
+  justify-self: start;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: var(--accent);
+}
+
+.exercise-arrow {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 34px;
+  height: 34px;
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  color: var(--text-secondary);
+  transition:
+    color 0.3s ease,
+    border-color 0.3s ease,
+    transform 0.3s ease;
+}
+
+.exercise-row:hover .exercise-arrow {
+  color: var(--accent);
+  border-color: var(--accent);
+  transform: translate(2px, -2px);
+}
 
 .team-section {
   background-color: var(--bg-secondary);
@@ -400,5 +508,39 @@
 
 .member-id {
   font-size: 1.05rem;
+}
+.exercise-intro {
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 16px;
+  margin: 36px 0 40px;
+}
+
+.exercise-intro p {
+  font-size: 0.9rem;
+}
+
+.exercise-row {
+  grid-template-columns: 42px minmax(0, 1fr) 32px;
+  gap: 14px;
+  min-height: 100px;
+  padding: 20px 0;
+}
+
+.exercise-metric {
+  display: none;
+}
+
+.exercise-main h3 {
+  font-size: 1.25rem;
+}
+
+.exercise-main p {
+  font-size: 0.8rem;
+}
+
+.exercise-row:hover {
+  padding-left: 10px;
+  padding-right: 10px;
 }
 }

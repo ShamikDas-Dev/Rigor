@@ -45,6 +45,10 @@ export default function AnalysisPanel({
   const isShoulderPress =
   normalizedExercise === "shoulder press" ||
   normalizedExercise === "shoulder presses";
+
+  const isLateralRaise =
+  normalizedExercise === "lateral raise" ||
+  normalizedExercise === "lateral raises";
   let metric = null;
   let metricLabel = "KNEE ANGLE";
 
@@ -80,7 +84,15 @@ else if (isShoulderPress) {
 
   metricLabel = "ELBOW ANGLE";
 }
+else if (isLateralRaise) {
+  metric = Number.isFinite(
+    analysis?.armAngle
+  )
+    ? analysis.armAngle
+    : null;
 
+  metricLabel = "ARM ANGLE";
+}
 else if (isPlank) {
   metric = Number.isFinite(
     analysis?.bodyAngle

@@ -9,6 +9,7 @@ export const exerciseCategories = [
       "Deadlift",
       "Bicep Curl",
       "Shoulder Press",
+      "Lateral Raises",
     ],
   },
 ];

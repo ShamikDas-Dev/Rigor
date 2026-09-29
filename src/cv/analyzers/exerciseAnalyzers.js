@@ -1,30 +1,19 @@
-import {
-  createDeadliftAnalyzer,
-} from "./deadliftAnalyzer";
+import { createSquatAnalyzer } from "./squatAnalyzer";
+import { createPushUpAnalyzer } from "./pushUpAnalyzer";
+import { createPlankAnalyzer } from "./plankAnalyzer";
+import { createLegRaiseAnalyzer } from "./legRaiseAnalyzer";
+import { createDeadliftAnalyzer } from "./deadliftAnalyzer";
+import { createBicepCurlAnalyzer } from "./bicepCurlAnalyzer";
 
-import {
-  createSquatAnalyzer,
-} from "./squatAnalyzer";
+const normalizeExercise = (exercise = "") =>
+  String(exercise)
+    .trim()
+    .toLowerCase()
+    .replace(/[-_]+/g, " ")
+    .replace(/\s+/g, " ");
 
-import {
-  createPushUpAnalyzer,
-} from "./pushUpAnalyzer";
-
-import {
-  createPlankAnalyzer,
-} from "./plankAnalyzer";
-
-import {
-  createLegRaiseAnalyzer,
-} from "./legRaiseAnalyzer";
-
-export function createExerciseAnalyzer(
-  exercise
-) {
-  const normalized =
-    String(exercise || "")
-      .trim()
-      .toLowerCase();
+export const createExerciseAnalyzer = (exercise) => {
+  const normalized = normalizeExercise(exercise);
 
   if (normalized === "squat") {
     return createSquatAnalyzer();
@@ -32,7 +21,7 @@ export function createExerciseAnalyzer(
 
   if (
     normalized === "push up" ||
-    normalized === "push-up"
+    normalized === "pushup"
   ) {
     return createPushUpAnalyzer();
   }
@@ -42,16 +31,26 @@ export function createExerciseAnalyzer(
   }
 
   if (
-    normalized === "leg raises" ||
-    normalized === "leg raise"
+    normalized === "leg raise" ||
+    normalized === "leg raises"
   ) {
     return createLegRaiseAnalyzer();
   }
 
-  if (normalized === "deadlift" || normalized === "dead lifts" || normalized === "dead lift") {
+  if (normalized === "deadlift") {
     return createDeadliftAnalyzer();
   }
 
+  if (
+    normalized === "bicep curl" ||
+    normalized === "biceps curl" ||
+    normalized === "bicep curls" ||
+    normalized === "biceps curls"
+  ) {
+    return createBicepCurlAnalyzer();
+  }
+
+  // Safe fallback for unsupported exercises.
   return {
     analyze() {
       return {
@@ -60,10 +59,12 @@ export function createExerciseAnalyzer(
         formScore: 0,
         feedback:
           "This exercise analyzer is not enabled yet.",
-        phase: "UNSUPPORTED",
+        phase: "NOT READY",
         metric: null,
         kneeAngle: null,
-        holdSeconds: 0,
+        elbowAngle: null,
+        hipAngle: null,
+        bodyAngle: null,
         tracking: false,
         voiceMessage: null,
       };
@@ -71,4 +72,4 @@ export function createExerciseAnalyzer(
 
     reset() {},
   };
-}
+};

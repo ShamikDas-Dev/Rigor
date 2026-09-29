@@ -32,6 +32,9 @@ export default function CameraView({
   const canvasRef =
     useRef(null);
 
+  /*
+   * MediaPipe Pose
+   */
   const {
     landmarks,
     isInitializing,
@@ -42,40 +45,35 @@ export default function CameraView({
     stopDetection,
   } = usePose(videoRef);
 
+  /*
+   * RIGOR voice feedback
+   */
   const {
     speak,
     stop,
+    reset: resetVoice,
   } = useVoiceFeedback({
     enabled: true,
-    rate: 1,
     volume: 1,
+    rate: 1,
   });
 
+  /*
+   * Debug pose output.
+   */
   useEffect(() => {
-    if (!analysis?.voiceMessage) {
-      return;
-    }
-
-    speak(
-      analysis.voiceMessage,
-      {
-        force:
-          analysis.feedback ===
-          "Good rep.",
-      }
+    console.log(
+      "[RIGOR POSE]",
+      landmarks
+        ? `${landmarks.length} landmarks`
+        : "NO LANDMARKS"
     );
-  }, [
-    analysis?.voiceMessage,
-    analysis?.feedback,
-    speak,
-  ]);
+  }, [landmarks]);
 
-  useEffect(() => {
-    if (isPaused) {
-      stop();
-    }
-  }, [isPaused, stop]);
-
+  /*
+   * Initialize MediaPipe once the
+   * camera video is ready.
+   */
   useEffect(() => {
     if (!videoRef.current) {
       return;
@@ -84,16 +82,24 @@ export default function CameraView({
     const video =
       videoRef.current;
 
+    let cancelled = false;
+
     const startPose =
       async () => {
-        if (video.readyState < 2) {
+        if (
+          cancelled ||
+          video.readyState < 2
+        ) {
           return;
         }
 
         const detector =
           await initialize();
 
-        if (!detector) {
+        if (
+          cancelled ||
+          !detector
+        ) {
           return;
         }
 
@@ -105,34 +111,45 @@ export default function CameraView({
       startPose
     );
 
-    if (video.readyState >= 2) {
+    if (
+      video.readyState >= 2
+    ) {
       startPose();
     }
 
     return () => {
+      cancelled = true;
+
       video.removeEventListener(
         "loadeddata",
         startPose
       );
 
       stopDetection();
-      stop();
     };
   }, [
     initialize,
     startDetection,
     stopDetection,
-    stop,
     videoRef,
   ]);
 
+  /*
+   * Send MediaPipe landmarks
+   * to Workout.jsx.
+   */
   useEffect(() => {
-    onLandmarks?.(landmarks);
+    onLandmarks?.(
+      landmarks
+    );
   }, [
     landmarks,
     onLandmarks,
   ]);
 
+  /*
+   * Draw skeleton.
+   */
   useEffect(() => {
     const canvas =
       canvasRef.current;
@@ -154,7 +171,10 @@ export default function CameraView({
     const height =
       video.videoHeight;
 
-    if (!width || !height) {
+    if (
+      !width ||
+      !height
+    ) {
       return;
     }
 
@@ -172,6 +192,76 @@ export default function CameraView({
     videoRef,
   ]);
 
+  /*
+   * ==========================
+   * VOICE FEEDBACK
+   * ==========================
+   *
+   * Analyzer generates:
+   *
+   * voiceMessage: "Good rep."
+   *
+   * This effect speaks it.
+   */
+  useEffect(() => {
+    if (isPaused) {
+      stop();
+      return;
+    }
+
+    const message =
+      typeof analysis?.voiceMessage ===
+      "string"
+        ? analysis.voiceMessage.trim()
+        : "";
+
+    if (!message) {
+      return;
+    }
+
+    const isGoodRep =
+      analysis?.feedback ===
+      "Good rep.";
+
+    console.log(
+      "[RIGOR VOICE]",
+      analysis?.exercise,
+      "→",
+      message
+    );
+
+    speak(message, {
+      force: isGoodRep,
+      priority:
+        isGoodRep
+          ? "high"
+          : "normal",
+    });
+  }, [
+    analysis?.voiceMessage,
+    analysis?.feedback,
+    analysis?.exercise,
+    isPaused,
+    speak,
+    stop,
+  ]);
+
+  /*
+   * Stop voice on cleanup.
+   */
+  useEffect(() => {
+    return () => {
+      stop();
+      resetVoice();
+    };
+  }, [
+    stop,
+    resetVoice,
+  ]);
+
+  /*
+   * Camera error.
+   */
   if (cameraError) {
     return (
       <div className="camera-container camera-error">
@@ -201,6 +291,7 @@ export default function CameraView({
 
   return (
     <div className="camera-container">
+
       {(isLoading ||
         isInitializing) && (
         <div className="camera-loading">
@@ -223,38 +314,51 @@ export default function CameraView({
 
       {!isPaused && (
         <div className="cv-overlays">
+
           <div className="overlay-top-left">
+
             <span className="cv-label">
               EXERCISE
             </span>
 
             <span className="cv-exercise">
-              {String(
-                analysis.exercise ||
-                  "SQUAT"
-              ).toUpperCase()}
+              {analysis?.exercise
+                ?.toUpperCase() ||
+                "ANALYZING"}
             </span>
 
             <span
+              className="cv-phase"
               style={{
                 display: "block",
-                marginTop: 6,
-                fontSize: 12,
+                marginTop: "8px",
                 color: "#B7FF00",
+                fontSize: "13px",
+                fontWeight: 600,
               }}
             >
-              {analysis.phase}
+              {String(
+                analysis?.phase ||
+                "NOT READY"
+              ).replace(
+                "_",
+                " "
+              )}
             </span>
+
           </div>
 
           <div className="overlay-top-right">
+
             <div className="cv-stat">
               <span className="cv-stat-label">
                 FORM
               </span>
 
               <span className="cv-stat-value accent">
-                {analysis.formScore}%
+                {analysis?.formScore ??
+                  0}
+                %
               </span>
             </div>
 
@@ -264,13 +368,17 @@ export default function CameraView({
               </span>
 
               <span className="cv-stat-value">
-                {analysis.reps}
+                {analysis?.reps ??
+                  0}
               </span>
             </div>
+
           </div>
 
           <div className="overlay-bottom-left">
+
             <div className="status-indicator">
+
               <span
                 className={`pulse-dot ${
                   isTracking
@@ -284,10 +392,13 @@ export default function CameraView({
                   ? "POSE ERROR"
                   : isTracking
                     ? "TRACKING"
-                    : "MOVE INTO VIEW"}
+                    : "NO PERSON DETECTED"}
               </span>
+
             </div>
+
           </div>
+
         </div>
       )}
 
@@ -298,6 +409,7 @@ export default function CameraView({
           </span>
         </div>
       )}
+
     </div>
   );
 }

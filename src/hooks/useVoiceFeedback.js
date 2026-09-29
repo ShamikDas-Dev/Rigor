@@ -1,17 +1,33 @@
 import { useCallback, useEffect, useRef } from "react";
 
+/*
+ * Convert anything passed by an analyzer into safe speech text.
+ *
+ * Supported:
+ *   "Keep your elbows stable."
+ *   { message: "Keep your elbows stable." }
+ *   { voiceMessage: "Keep your elbows stable." }
+ *   { feedback: "Keep your elbows stable." }
+ */
 function toSpeechText(value) {
-  if (typeof value === "string") return value.trim();
-  if (value == null) return "";
+  if (typeof value === "string") {
+    return value.trim();
+  }
+
+  if (value == null) {
+    return "";
+  }
 
   if (typeof value === "object") {
     const candidate =
-      value.text ??
-      value.message ??
       value.voiceMessage ??
+      value.message ??
+      value.text ??
       value.feedback;
 
-    return typeof candidate === "string" ? candidate.trim() : "";
+    if (typeof candidate === "string") {
+      return candidate.trim();
+    }
   }
 
   return String(value).trim();
@@ -21,110 +37,234 @@ export function useVoiceFeedback({
   enabled = true,
   volume = 1,
   rate = 1,
+  lang = "en-US",
 } = {}) {
   const speakingRef = useRef(false);
-  const pendingRef = useRef("");
-  const lastSpokenRef = useRef("");
+  const currentTextRef = useRef("");
+  const pendingTextRef = useRef("");
+
+  const lastTextRef = useRef("");
   const lastSpokenAtRef = useRef(0);
+
   const utteranceRef = useRef(null);
-  const stopTokenRef = useRef(0);
+  const stopGenerationRef = useRef(0);
 
   const speakNextRef = useRef(null);
 
+  /*
+   * Completely stop current and pending speech.
+   */
   const stop = useCallback(() => {
-    stopTokenRef.current += 1;
+    stopGenerationRef.current += 1;
+
     speakingRef.current = false;
-    pendingRef.current = "";
+    currentTextRef.current = "";
+    pendingTextRef.current = "";
     utteranceRef.current = null;
 
-    if (typeof window !== "undefined" && "speechSynthesis" in window) {
+    if (
+      typeof window !== "undefined" &&
+      "speechSynthesis" in window
+    ) {
       window.speechSynthesis.cancel();
     }
   }, []);
 
-  const startSpeaking = useCallback((text) => {
-    if (
-      !text ||
-      typeof window === "undefined" ||
-      !("speechSynthesis" in window)
-    ) {
-      return;
-    }
-
-    const token = stopTokenRef.current;
-    const utterance = new SpeechSynthesisUtterance(text);
-    utterance.lang = "en-US";
-    utterance.rate = rate;
-    utterance.volume = volume;
-
-    speakingRef.current = true;
-    utteranceRef.current = utterance;
-
-    const finish = () => {
-      if (utteranceRef.current !== utterance) return;
-
-      utteranceRef.current = null;
-      speakingRef.current = false;
-
-      const pending = pendingRef.current;
-      pendingRef.current = "";
-
-      if (pending && token === stopTokenRef.current) {
-        window.setTimeout(() => {
-          if (token === stopTokenRef.current) {
-            speakNextRef.current?.(pending);
-          }
-        }, 50);
+  /*
+   * Speak one message.
+   */
+  const startSpeaking = useCallback(
+    (text) => {
+      if (
+        !text ||
+        typeof window === "undefined" ||
+        !("speechSynthesis" in window)
+      ) {
+        return;
       }
-    };
 
-    utterance.onend = finish;
-    utterance.onerror = finish;
+      const generation = stopGenerationRef.current;
 
-    try {
-      window.speechSynthesis.resume();
-      window.speechSynthesis.speak(utterance);
-    } catch {
-      finish();
-    }
-  }, [rate, volume]);
+      const utterance =
+        new SpeechSynthesisUtterance(text);
+
+      utterance.lang = lang;
+      utterance.rate = Math.max(0.5, Math.min(rate, 2));
+      utterance.volume = Math.max(
+        0,
+        Math.min(volume, 1)
+      );
+
+      speakingRef.current = true;
+      currentTextRef.current = text;
+      utteranceRef.current = utterance;
+
+      const finish = () => {
+        if (
+          utteranceRef.current !== utterance
+        ) {
+          return;
+        }
+
+        utteranceRef.current = null;
+        speakingRef.current = false;
+        currentTextRef.current = "";
+
+        const pending =
+          pendingTextRef.current;
+
+        pendingTextRef.current = "";
+
+        if (
+          pending &&
+          generation ===
+            stopGenerationRef.current
+        ) {
+          window.setTimeout(() => {
+            if (
+              generation ===
+              stopGenerationRef.current
+            ) {
+              speakNextRef.current?.(
+                pending
+              );
+            }
+          }, 40);
+        }
+      };
+
+      utterance.onend = finish;
+      utterance.onerror = finish;
+
+      try {
+        /*
+         * Chrome can occasionally leave the speech engine paused.
+         */
+        window.speechSynthesis.resume();
+
+        window.speechSynthesis.speak(
+          utterance
+        );
+      } catch (error) {
+        console.error(
+          "[RIGOR VOICE] Speech error:",
+          error
+        );
+
+        finish();
+      }
+    },
+    [lang, rate, volume]
+  );
 
   speakNextRef.current = startSpeaking;
 
-  const speak = useCallback((message, { force = false, priority = "normal" } = {}) => {
-    if (!enabled) return;
+  /*
+   * Public speech function.
+   */
+  const speak = useCallback(
+    (
+      message,
+      {
+        force = false,
+        priority = "normal",
+      } = {}
+    ) => {
+      if (!enabled) {
+        return;
+      }
 
-    const text = toSpeechText(message);
-    if (!text) return;
+      const text = toSpeechText(message);
 
-    const now = Date.now();
-    const cooldown = priority === "high" ? 700 : 1800;
+      if (!text) {
+        return;
+      }
 
-    if (
-      !force &&
-      text === lastSpokenRef.current &&
-      now - lastSpokenAtRef.current < cooldown
-    ) {
-      return;
-    }
+      const now = Date.now();
 
-    lastSpokenRef.current = text;
-    lastSpokenAtRef.current = now;
+      /*
+       * High priority messages such as
+       * "Good rep." get a shorter cooldown.
+       */
+      const cooldown =
+        priority === "high"
+          ? 700
+          : 1500;
 
-    if (speakingRef.current) {
-      // Replace stale pending feedback instead of building a queue.
-      pendingRef.current = text;
-      return;
-    }
+      /*
+       * Prevent the same message from being
+       * repeatedly spoken every pose frame.
+       */
+      if (
+        !force &&
+        text === lastTextRef.current &&
+        now - lastSpokenAtRef.current <
+          cooldown
+      ) {
+        return;
+      }
 
-    startSpeaking(text);
-  }, [enabled, startSpeaking]);
+      /*
+       * Ignore rapid duplicate requests.
+       */
+      if (
+        !force &&
+        now - lastSpokenAtRef.current <
+          500
+      ) {
+        return;
+      }
 
-  useEffect(() => () => stop(), [stop]);
+      lastTextRef.current = text;
+      lastSpokenAtRef.current = now;
 
+      /*
+       * If something is already speaking,
+       * replace the pending message instead
+       * of creating a long queue.
+       */
+      if (speakingRef.current) {
+        pendingTextRef.current = text;
+        return;
+      }
+
+      startSpeaking(text);
+    },
+    [enabled, startSpeaking]
+  );
+
+  /*
+   * Reset the duplicate-message state.
+   */
+  const reset = useCallback(() => {
+    lastTextRef.current = "";
+    lastSpokenAtRef.current = 0;
+    pendingTextRef.current = "";
+  }, []);
+
+  /*
+   * Stop everything when the component
+   * using this hook is unmounted.
+   */
   useEffect(() => {
-    if (!enabled) stop();
+    return () => {
+      stop();
+    };
+  }, [stop]);
+
+  /*
+   * Disable speech immediately when enabled
+   * becomes false.
+   */
+  useEffect(() => {
+    if (!enabled) {
+      stop();
+    }
   }, [enabled, stop]);
 
-  return { speak, stop };
+  return {
+    speak,
+    stop,
+    reset,
+  };
 }

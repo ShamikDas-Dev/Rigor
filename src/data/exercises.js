@@ -1,22 +1,17 @@
 export const exerciseCategories = [
   {
-    category: "Phase 1",
+    category: "Supported",
     items: [
       "Squat",
-    ],
-  },
-  {
-    category: "Planned",
-    items: [
       "Push Up",
       "Plank",
       "Leg Raises",
       "Deadlift",
+      "Bicep Curl",
     ],
   },
 ];
 
-export const allExercises =
-  exerciseCategories.flatMap(
-    (category) => category.items
-  );
+export const allExercises = exerciseCategories.flatMap(
+  (category) => category.items
+);

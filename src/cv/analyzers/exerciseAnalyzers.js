@@ -4,7 +4,7 @@ import { createPlankAnalyzer } from "./plankAnalyzer";
 import { createLegRaiseAnalyzer } from "./legRaiseAnalyzer";
 import { createDeadliftAnalyzer } from "./deadliftAnalyzer";
 import { createBicepCurlAnalyzer } from "./bicepCurlAnalyzer";
-
+import {createShoulderPressAnalyzer} from "./shoulderPressAnalyzer";
 const normalizeExercise = (exercise = "") =>
   String(exercise)
     .trim()
@@ -49,7 +49,12 @@ export const createExerciseAnalyzer = (exercise) => {
   ) {
     return createBicepCurlAnalyzer();
   }
-
+  if (
+  normalized === "shoulder press" ||
+  normalized === "shoulder presses"
+) {
+  return createShoulderPressAnalyzer();
+}
   // Safe fallback for unsupported exercises.
   return {
     analyze() {

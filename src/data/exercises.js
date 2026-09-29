@@ -8,10 +8,12 @@ export const exerciseCategories = [
       "Leg Raises",
       "Deadlift",
       "Bicep Curl",
+      "Shoulder Press",
     ],
   },
 ];
 
-export const allExercises = exerciseCategories.flatMap(
-  (category) => category.items
-);
+export const allExercises =
+  exerciseCategories.flatMap(
+    (category) => category.items
+  );

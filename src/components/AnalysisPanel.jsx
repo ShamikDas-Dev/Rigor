@@ -42,86 +42,84 @@ export default function AnalysisPanel({
     normalizedExercise === "dead lift" ||
     normalizedExercise === "dead lifts";
 
+  const isShoulderPress =
+  normalizedExercise === "shoulder press" ||
+  normalizedExercise === "shoulder presses";
   let metric = null;
   let metricLabel = "KNEE ANGLE";
 
   /*
    * PUSH UP
    */
-  if (isPushUp) {
-    metric = Number.isFinite(
-      analysis?.elbowAngle
-    )
-      ? analysis.elbowAngle
-      : null;
+if (isPushUp) {
+  metric = Number.isFinite(
+    analysis?.elbowAngle
+  )
+    ? analysis.elbowAngle
+    : null;
 
-    metricLabel = "ELBOW ANGLE";
-  }
+  metricLabel = "ELBOW ANGLE";
+}
 
-  /*
-   * BICEP CURL
-   */
-  else if (isBicepCurl) {
-    metric = Number.isFinite(
-      analysis?.elbowAngle
-    )
-      ? analysis.elbowAngle
-      : null;
+else if (isBicepCurl) {
+  metric = Number.isFinite(
+    analysis?.elbowAngle
+  )
+    ? analysis.elbowAngle
+    : null;
 
-    metricLabel = "ELBOW ANGLE";
-  }
+  metricLabel = "ELBOW ANGLE";
+}
 
-  /*
-   * PLANK
-   */
-  else if (isPlank) {
-    metric = Number.isFinite(
-      analysis?.bodyAngle
-    )
-      ? analysis.bodyAngle
-      : null;
+else if (isShoulderPress) {
+  metric = Number.isFinite(
+    analysis?.elbowAngle
+  )
+    ? analysis.elbowAngle
+    : null;
 
-    metricLabel = "BODY ANGLE";
-  }
+  metricLabel = "ELBOW ANGLE";
+}
 
-  /*
-   * LEG RAISES
-   */
-  else if (isLegRaise) {
-    metric = Number.isFinite(
-      analysis?.hipAngle
-    )
-      ? analysis.hipAngle
-      : null;
+else if (isPlank) {
+  metric = Number.isFinite(
+    analysis?.bodyAngle
+  )
+    ? analysis.bodyAngle
+    : null;
 
-    metricLabel = "HIP ANGLE";
-  }
+  metricLabel = "BODY ANGLE";
+}
 
-  /*
-   * DEADLIFT
-   */
-  else if (isDeadlift) {
-    metric = Number.isFinite(
-      analysis?.hipAngle
-    )
-      ? analysis.hipAngle
-      : null;
+else if (isLegRaise) {
+  metric = Number.isFinite(
+    analysis?.hipAngle
+  )
+    ? analysis.hipAngle
+    : null;
 
-    metricLabel = "HIP ANGLE";
-  }
+  metricLabel = "HIP ANGLE";
+}
 
-  /*
-   * SQUAT
-   */
-  else {
-    metric = Number.isFinite(
-      analysis?.kneeAngle
-    )
-      ? analysis.kneeAngle
-      : null;
+else if (isDeadlift) {
+  metric = Number.isFinite(
+    analysis?.hipAngle
+  )
+    ? analysis.hipAngle
+    : null;
 
-    metricLabel = "KNEE ANGLE";
-  }
+  metricLabel = "HIP ANGLE";
+}
+
+else {
+  metric = Number.isFinite(
+    analysis?.kneeAngle
+  )
+    ? analysis.kneeAngle
+    : null;
+
+  metricLabel = "KNEE ANGLE";
+}
 
   return (
     <aside className="analysis-panel">

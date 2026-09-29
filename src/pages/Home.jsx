@@ -169,16 +169,20 @@ export default function Home() {
     </div>
   </div>
 </section>
-
+{/* EXERCISES SECTION */}
 <section id="exercises" className="section exercises-section">
   <div className="container">
+
     <SectionHeading
       title={"TRAIN WITH\nCONTROL."}
       highlight="CONTROL."
     />
 
     <div className="exercise-intro">
-      <span className="exercise-count">05 EXERCISES</span>
+      <span className="exercise-count">
+        08 EXERCISES
+      </span>
+
       <p>
         Each movement is analyzed in real time using pose tracking,
         movement-specific logic, and live feedback.
@@ -186,53 +190,167 @@ export default function Home() {
     </div>
 
     <div className="exercise-showcase">
-      {[
-        {
-          id: "01",
-          name: "SQUAT",
-          metric: "KNEE ANALYSIS",
-          description: "Lower. Hold. Drive.",
-        },
-        {
-          id: "02",
-          name: "PUSH UP",
-          metric: "ELBOW ANALYSIS",
-          description: "Control every repetition.",
-        },
-        {
-          id: "03",
-          name: "PLANK",
-          metric: "BODY ANALYSIS",
-          description: "Hold your position.",
-        },
-        {
-          id: "04",
-          name: "LEG RAISES",
-          metric: "HIP ANALYSIS",
-          description: "Move with control.",
-        },
-        {
-          id: "05",
-          name: "DEADLIFT",
-          metric: "HIP ANALYSIS",
-          description: "Hinge. Drive. Repeat.",
-        },
-      ].map((exercise) => (
-        <div className="exercise-row" key={exercise.id}>
-          <span className="exercise-number">{exercise.id}</span>
 
-          <div className="exercise-main">
-            <h3>{exercise.name}</h3>
-            <p>{exercise.description}</p>
-          </div>
+      {/* 01 */}
+      <div className="exercise-row">
+        <span className="exercise-number">
+          01
+        </span>
 
-          <span className="exercise-metric">
-            {exercise.metric}
-          </span>
-
-          <span className="exercise-arrow">↗</span>
+        <div className="exercise-main">
+          <h3>SQUAT</h3>
+          <p>Lower. Hold. Drive.</p>
         </div>
-      ))}
+
+        <span className="exercise-metric">
+          KNEE ANALYSIS
+        </span>
+
+        <span className="exercise-arrow">
+          ↗
+        </span>
+      </div>
+
+      {/* 02 */}
+      <div className="exercise-row">
+        <span className="exercise-number">
+          02
+        </span>
+
+        <div className="exercise-main">
+          <h3>PUSH UP</h3>
+          <p>Control every repetition.</p>
+        </div>
+
+        <span className="exercise-metric">
+          ELBOW ANALYSIS
+        </span>
+
+        <span className="exercise-arrow">
+          ↗
+        </span>
+      </div>
+
+      {/* 03 */}
+      <div className="exercise-row">
+        <span className="exercise-number">
+          03
+        </span>
+
+        <div className="exercise-main">
+          <h3>PLANK</h3>
+          <p>Hold your position.</p>
+        </div>
+
+        <span className="exercise-metric">
+          BODY ANALYSIS
+        </span>
+
+        <span className="exercise-arrow">
+          ↗
+        </span>
+      </div>
+
+      {/* 04 */}
+      <div className="exercise-row">
+        <span className="exercise-number">
+          04
+        </span>
+
+        <div className="exercise-main">
+          <h3>LEG RAISES</h3>
+          <p>Move with control.</p>
+        </div>
+
+        <span className="exercise-metric">
+          HIP ANALYSIS
+        </span>
+
+        <span className="exercise-arrow">
+          ↗
+        </span>
+      </div>
+
+      {/* 05 */}
+      <div className="exercise-row">
+        <span className="exercise-number">
+          05
+        </span>
+
+        <div className="exercise-main">
+          <h3>DEADLIFT</h3>
+          <p>Hinge. Drive. Repeat.</p>
+        </div>
+
+        <span className="exercise-metric">
+          HIP ANALYSIS
+        </span>
+
+        <span className="exercise-arrow">
+          ↗
+        </span>
+      </div>
+
+      {/* 06 */}
+      <div className="exercise-row">
+        <span className="exercise-number">
+          06
+        </span>
+
+        <div className="exercise-main">
+          <h3>BICEP CURL</h3>
+          <p>Curl with control.</p>
+        </div>
+
+        <span className="exercise-metric">
+          ELBOW ANALYSIS
+        </span>
+
+        <span className="exercise-arrow">
+          ↗
+        </span>
+      </div>
+
+      {/* 07 */}
+      <div className="exercise-row">
+        <span className="exercise-number">
+          07
+        </span>
+
+        <div className="exercise-main">
+          <h3>SHOULDER PRESS</h3>
+          <p>Press with stability.</p>
+        </div>
+
+        <span className="exercise-metric">
+          ELBOW ANALYSIS
+        </span>
+
+        <span className="exercise-arrow">
+          ↗
+        </span>
+      </div>
+
+      {/* 08 */}
+      <div className="exercise-row">
+        <span className="exercise-number">
+          08
+        </span>
+
+        <div className="exercise-main">
+          <h3>LATERAL RAISES</h3>
+          <p>Raise to shoulder height.</p>
+        </div>
+
+        <span className="exercise-metric">
+          ARM ANALYSIS
+        </span>
+
+        <span className="exercise-arrow">
+          ↗
+        </span>
+      </div>
+
     </div>
   </div>
 </section>

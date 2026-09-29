@@ -208,20 +208,28 @@
 .exercises-section {
   background-color: var(--bg-primary);
 }
-/* EXERCISE SHOWCASE */
+/* =========================
+   EXERCISE SHOWCASE
+========================= */
+
+.exercises-section {
+  background-color: var(--bg-primary);
+  padding: 90px 0;
+}
 
 .exercise-intro {
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
   gap: 40px;
-  margin: 48px 0 56px;
+
+  margin: 32px 0 38px;
   max-width: 900px;
 }
 
 .exercise-count {
   font-family: var(--font-heading);
-  font-size: 0.8rem;
+  font-size: 0.75rem;
   font-weight: 700;
   letter-spacing: 0.14em;
   color: var(--accent);
@@ -231,84 +239,123 @@
 .exercise-intro p {
   max-width: 520px;
   margin: 0;
+
   color: var(--text-secondary);
-  font-size: 1rem;
-  line-height: 1.7;
+  font-size: 0.9rem;
+  line-height: 1.6;
 }
 
 .exercise-showcase {
   border-top: 1px solid var(--border);
 }
 
+/* ROW */
+
 .exercise-row {
+  box-sizing: border-box;
+
   display: grid;
-  grid-template-columns: 70px minmax(0, 1fr) 180px 40px;
+  grid-template-columns:
+    60px
+    minmax(0, 1fr)
+    180px
+    40px;
+
   align-items: center;
   gap: 24px;
-  min-height: 118px;
-  padding: 24px 0;
+
+  height: 100px;
+  min-height: 100px;
+
+  padding: 14px 0;
+
   border-bottom: 1px solid var(--border);
+
   transition:
-    padding 0.3s ease,
-    background-color 0.3s ease;
+    padding 0.25s ease,
+    background-color 0.25s ease;
 }
 
 .exercise-row:hover {
-  padding-left: 20px;
-  padding-right: 20px;
+  padding-left: 16px;
+  padding-right: 16px;
+
   background: rgba(183, 255, 0, 0.025);
 }
 
+/* NUMBER */
+
 .exercise-number {
   font-family: var(--font-heading);
-  font-size: 0.8rem;
+  font-size: 0.72rem;
   font-weight: 700;
   letter-spacing: 0.1em;
   color: var(--text-muted);
 }
 
+/* NAME + DESCRIPTION */
+
 .exercise-main {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 5px;
+
+  min-width: 0;
 }
 
 .exercise-main h3 {
   margin: 0;
+
   font-family: var(--font-heading);
-  font-size: clamp(1.4rem, 2.5vw, 2rem);
+  font-size: clamp(1.35rem, 2.3vw, 1.85rem);
   font-weight: 700;
-  letter-spacing: -0.02em;
+  line-height: 1;
+
+  letter-spacing: -0.025em;
   color: var(--text-primary);
 }
 
 .exercise-main p {
   margin: 0;
-  font-size: 0.9rem;
+
+  font-size: 0.78rem;
+  line-height: 1.4;
   color: var(--text-muted);
 }
 
+/* ANALYSIS */
+
 .exercise-metric {
   justify-self: start;
-  font-size: 0.7rem;
+
+  font-size: 0.65rem;
   font-weight: 700;
   letter-spacing: 0.1em;
+
   color: var(--accent);
+  white-space: nowrap;
 }
+
+/* ARROW */
 
 .exercise-arrow {
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
+
   width: 34px;
   height: 34px;
+
   border: 1px solid var(--border);
   border-radius: 50%;
+
   color: var(--text-secondary);
+  font-size: 1rem;
+
   transition:
-    color 0.3s ease,
-    border-color 0.3s ease,
-    transform 0.3s ease;
+    color 0.25s ease,
+    border-color 0.25s ease,
+    transform 0.25s ease;
 }
 
 .exercise-row:hover .exercise-arrow {
@@ -317,8 +364,131 @@
   transform: translate(2px, -2px);
 }
 
-.team-section {
-  background-color: var(--bg-secondary);
+/* =========================
+   TABLET
+========================= */
+
+@media (max-width: 900px) {
+  .exercises-section {
+    padding: 80px 0;
+  }
+
+  .exercise-row {
+    grid-template-columns:
+      50px
+      minmax(0, 1fr)
+      150px
+      38px;
+
+    gap: 18px;
+    height: 94px;
+  }
+
+  .exercise-main h3 {
+    font-size: 1.5rem;
+  }
+
+  .exercise-metric {
+    font-size: 0.6rem;
+  }
+}
+
+/* =========================
+   MOBILE
+========================= */
+
+@media (max-width: 640px) {
+  .exercises-section {
+    padding: 70px 0;
+  }
+
+  .exercise-intro {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 14px;
+
+    margin: 28px 0 32px;
+  }
+
+  .exercise-intro p {
+    font-size: 0.82rem;
+  }
+
+  .exercise-row {
+    grid-template-columns:
+      34px
+      minmax(0, 1fr)
+      34px;
+
+    gap: 12px;
+
+    height: 82px;
+    min-height: 82px;
+
+    padding: 12px 0;
+  }
+
+  .exercise-number {
+    font-size: 0.62rem;
+  }
+
+  .exercise-main {
+    gap: 4px;
+  }
+
+  .exercise-main h3 {
+    font-size: 1.2rem;
+  }
+
+  .exercise-main p {
+    font-size: 0.7rem;
+  }
+
+  .exercise-metric {
+    display: none;
+  }
+
+  .exercise-arrow {
+    width: 32px;
+    height: 32px;
+    font-size: 0.9rem;
+  }
+
+  .exercise-row:hover {
+    padding-left: 8px;
+    padding-right: 8px;
+  }
+}
+
+/* =========================
+   SMALL MOBILE
+========================= */
+
+@media (max-width: 420px) {
+  .exercise-row {
+    grid-template-columns:
+      28px
+      minmax(0, 1fr)
+      32px;
+
+    gap: 10px;
+
+    height: 78px;
+    min-height: 78px;
+  }
+
+  .exercise-main h3 {
+    font-size: 1.08rem;
+  }
+
+  .exercise-main p {
+    font-size: 0.67rem;
+  }
+
+  .exercise-arrow {
+    width: 30px;
+    height: 30px;
+  }
 }
 
 /* PROCESS */
